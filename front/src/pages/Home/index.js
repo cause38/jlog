@@ -3,7 +3,7 @@ import {Link} from 'react-router-dom';
 
 const HOME = () => {
   return (
-    <div>
+    <div className="inner">
       <h2>HOME</h2>
       <Link to="/list">go list</Link>
     </div>

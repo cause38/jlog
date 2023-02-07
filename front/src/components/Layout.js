@@ -17,7 +17,7 @@ const Layout = ({children}) => {
   return (
     <StyledLayout>
       <Header />
-      <main>{children || <Outlet />}</main>
+      <main className="inner">{children || <Outlet />}</main>
       <Footer />
     </StyledLayout>
   );

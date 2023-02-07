@@ -24,7 +24,7 @@ const Header = () => {
           <StyledDarkmode type="button" onClick={() => setDarkMode(!darkmode)}>
             {darkmode ? <BsFillMoonStarsFill /> : <BsSunFill />}
           </StyledDarkmode>
-          <StyledLogin to="Login">Login</StyledLogin>
+          <StyledLogin to="/login">Login</StyledLogin>
           <StyledProfileWrap>
             <StyledProfileImg src={logo} alt={'user-profile'} />
           </StyledProfileWrap>
