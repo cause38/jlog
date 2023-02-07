@@ -11,13 +11,31 @@ const StyledLayout = styled.div`
   align-items: center;
   width: 100vw;
   min-height: 100vh;
+
+  .inner {
+    --padding: 20px;
+    max-width: calc(1440px + var(--padding) * 2);
+    margin: 0 auto;
+    padding: 0 var(--padding);
+  }
+`;
+
+const Main = styled.main`
+  width: 100%;
+  min-height: calc(100vh - 125px);
+
+  &:has(.center-box) {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
 `;
 
 const Layout = ({children}) => {
   return (
     <StyledLayout>
       <Header />
-      <main className="inner">{children || <Outlet />}</main>
+      <Main className="inner">{children || <Outlet />}</Main>
       <Footer />
     </StyledLayout>
   );

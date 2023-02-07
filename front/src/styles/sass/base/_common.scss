@@ -95,22 +95,14 @@ body {
   transition: 0.5s;
   * {
     color: var(--text1);
+    font-size: 14px;
+    box-sizing: border-box;
   }
 }
 
-header,
-footer,
-main {
-  width: 100%;
-}
-
-main {
-  min-height: calc(100vh - 125px);
-}
-
-.inner {
-  --padding: 20px;
-  max-width: calc(1440px + var(--padding) * 2);
-  margin: 0 auto;
-  padding: 0 var(--padding);
+.hide {
+  height: 0;
+  overflow: hidden;
+  text-indent: -9999vw;
+  white-space: nowrap;
 }
