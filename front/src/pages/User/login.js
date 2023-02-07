@@ -1,5 +1,4 @@
 import React, {useEffect, useState} from 'react';
-import {useLocation} from 'react-router';
 import styled from 'styled-components';
 import Input from 'components/Input';
 import Button from 'components/Button';
@@ -7,12 +6,47 @@ import logo from 'assets/logo.png';
 
 const Login = () => {
   const [joinMode, setJoinMode] = useState(false);
-  const handleLogin = () => {};
+  const [form, setForm] = useState({
+    email: '',
+    name: '',
+    password: '',
+  });
+
+  const handleLogin = () => {
+    console.log('login');
+  };
+
   const handleJoin = () => {
     if (joinMode) {
+      const url = 'http://localhost:5000/api/register';
+      const options = {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(form),
+      };
+
+      fetch(url, options)
+        .then(res => res.json())
+        .then(data => {
+          if (data.success) {
+            alert(`${data.user.name}님 안녕하세요! \n가입이 완료되였습니다🎉`);
+            setJoinMode(false);
+          } else {
+            alert(data.msg);
+          }
+        })
+        .catch(error => console.log('error:', error));
     } else {
       setJoinMode(true);
     }
+  };
+
+  const handleForm = e => {
+    const name = e.target.getAttribute('name');
+    const value = e.target.value;
+    setForm({...form, [name]: value});
   };
 
   return (
@@ -22,20 +56,16 @@ const Login = () => {
         <LogoImg src={logo} alt="jlog" /> log
       </LogoBox>
       <InputBox>
-        <Input type="text" name="id" placeholder="email@email.com" />
-        <Input type="password" name="pw" placeholder="비밀번호" />
+        <Input type="text" name="email" placeholder="email@email.com" onChange={handleForm} />
+        {joinMode && <Input type="text" name="name" placeholder="이름" onChange={handleForm} />}
+        <Input type="password" name="password" placeholder="비밀번호" onChange={handleForm} />
       </InputBox>
       <ButtonBox>
-        <Button type="button" id="JoninBtn" text="회원가입" onClick={handleJoin} />
+        <Button type="button" text="회원가입" onClick={handleJoin} />
         {!joinMode ? (
-          <Button type="submit" id="loginBtn" text="로그인" onClick={handleLogin} />
+          <Button type="submit" text="로그인" onClick={handleLogin} />
         ) : (
-          <Button
-            type="submit"
-            id="loginBtn"
-            text="로그인"
-            onClick={<Button type="button" text="뒤로가기" onClick={setJoinMode(false)} />}
-          />
+          <Button type="button" text="뒤로가기" onClick={() => setJoinMode(false)} />
         )}
       </ButtonBox>
     </LoginBox>
