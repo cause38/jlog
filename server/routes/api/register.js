@@ -1,7 +1,6 @@
 const express = require('express');
 const {User} = require('../../models/User'); // User model 불러오기
 const router = express.Router(); // express의 Router 사용
-const bcrypt = require('bcryptjs'); // 암호화 모듈
 
 router.post('/', async (req, res) => {
   const {name, email, password} = req.body;
@@ -19,10 +18,6 @@ router.post('/', async (req, res) => {
       email,
       password,
     });
-
-    // password를 암호화 하기
-    const salt = await bcrypt.genSalt(10);
-    user.password = await bcrypt.hash(password, salt);
 
     await user.save(); // db에 user 저장
     return res.status(200).json({success: true, user: {name: user.name, email: user.email}});

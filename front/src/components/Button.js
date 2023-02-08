@@ -20,19 +20,13 @@ const Button = ({type, id, className, text, onClick, target, to}) => {
     <>
       {to ? (
         <StyledButton>
-          <Link
-            to={to}
-            id={id}
-            className={className ? `btn ${className}` : 'btn'}
-            onClick={() => onClick}
-            target={target}
-          >
+          <Link to={to} id={id} className={className ? `btn ${className}` : 'btn'} onClick={onClick} target={target}>
             {text}
           </Link>
         </StyledButton>
       ) : (
         <StyledButton>
-          <button type={type} id={id} className={className ? `btn ${className}` : 'btn'} onClick={() => onClick()}>
+          <button type={type} id={id} className={className ? `btn ${className}` : 'btn'} onClick={onClick}>
             {text}
           </button>
         </StyledButton>

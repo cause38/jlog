@@ -1,10 +1,18 @@
 import React, {useEffect, useState} from 'react';
+import {useNavigate} from 'react-router-dom';
+import {useRecoilState} from 'recoil';
+import {Token, Role, Name} from 'atoms';
+import API from 'config';
 import styled from 'styled-components';
 import Input from 'components/Input';
 import Button from 'components/Button';
 import logo from 'assets/logo.png';
 
 const Login = () => {
+  const navigate = useNavigate();
+  const [token, setToken] = useRecoilState(Token);
+  const [name, setName] = useRecoilState(Name);
+  const [role, setRole] = useRecoilState(Role);
   const [joinMode, setJoinMode] = useState(false);
   const [form, setForm] = useState({
     email: '',
@@ -12,13 +20,53 @@ const Login = () => {
     password: '',
   });
 
-  const handleLogin = () => {
-    console.log('login');
+  useEffect(() => {
+    if (token && token !== '') {
+      alert('이미 로그인 되어 있습니다.');
+      navigate('/');
+    }
+  }, []);
+
+  const handleLogin = e => {
+    e.preventDefault();
+
+    const url = API.login;
+    const param = {
+      email: form.email,
+      password: form.password,
+    };
+    const options = {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(param),
+    };
+
+    if (!joinMode) {
+      fetch(url, options)
+        .then(res => res.json())
+        .then(data => {
+          if (data.success) {
+            alert(`로그인 완료!🎉`);
+            setToken(data.user.token);
+            setName(data.user.name);
+            setRole(data.user.role);
+            sessionStorage.setItem('token', data.user.token);
+            sessionStorage.setItem('name', data.user.name);
+            sessionStorage.setItem('role', data.user.role);
+            navigate('/');
+          } else {
+            alert(data.msg);
+          }
+        })
+        .catch(error => console.log('error:', error));
+    }
   };
 
   const handleJoin = () => {
     if (joinMode) {
-      const url = 'http://localhost:5000/api/register';
+      const url = API.register;
       const options = {
         method: 'POST',
         headers: {
@@ -55,19 +103,21 @@ const Login = () => {
       <LogoBox>
         <LogoImg src={logo} alt="jlog" /> log
       </LogoBox>
-      <InputBox>
-        <Input type="text" name="email" placeholder="email@email.com" onChange={handleForm} />
-        {joinMode && <Input type="text" name="name" placeholder="이름" onChange={handleForm} />}
-        <Input type="password" name="password" placeholder="비밀번호" onChange={handleForm} />
-      </InputBox>
-      <ButtonBox>
-        <Button type="button" text="회원가입" onClick={handleJoin} />
-        {!joinMode ? (
-          <Button type="submit" text="로그인" onClick={handleLogin} />
-        ) : (
-          <Button type="button" text="뒤로가기" onClick={() => setJoinMode(false)} />
-        )}
-      </ButtonBox>
+      <form onSubmit={e => handleLogin(e)}>
+        <InputBox>
+          <Input type="text" name="email" placeholder="email@email.com" onChange={handleForm} />
+          {joinMode && <Input type="text" name="name" placeholder="이름" onChange={handleForm} />}
+          <Input type="password" name="password" placeholder="비밀번호" onChange={handleForm} />
+        </InputBox>
+        <ButtonBox>
+          <Button type="button" text="회원가입" onClick={handleJoin} />
+          {!joinMode ? (
+            <Button type="submit" text="로그인" onClick={e => handleLogin(e)} />
+          ) : (
+            <Button type="button" text="뒤로가기" onClick={() => setJoinMode(false)} />
+          )}
+        </ButtonBox>
+      </form>
     </LoginBox>
   );
 };

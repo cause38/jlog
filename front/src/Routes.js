@@ -4,16 +4,19 @@ import Layout from 'components/Layout';
 import Home from 'pages/Home';
 import Login from 'pages/User/Login';
 import Logout from 'pages/User/Logout';
-import 'styles/css/main.css';
+import Write from 'pages/Post/Write';
+import GlobalStyles from 'components/GlobalStyles';
 
 const Router = () => {
   return (
     <BrowserRouter>
+      <GlobalStyles />
       <Layout>
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/login" element={<Login />} />
           <Route path="/logout" element={<Logout />} />
+          <Route path="/write" element={<Write />} />
         </Routes>
       </Layout>
     </BrowserRouter>
