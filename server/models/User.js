@@ -2,6 +2,7 @@ const mongoose = require('mongoose'); // mongoose를 선언해주고,
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcryptjs'); // 암호화 모듈
 const saltRounds = 10;
+const {JWT_SECRET} = process.env;
 
 const userSchema = mongoose.Schema({
   // userSchema라는 이름의 schema를 작성해준다.
@@ -59,7 +60,7 @@ userSchema.methods.comparePassword = function (plainPassword, cb) {
 
 userSchema.methods.generateToken = function (cb) {
   const user = this;
-  const token = jwt.sign(user._id.toHexString(), 'secretToken');
+  const token = jwt.sign(user._id.toHexString(), JWT_SECRET);
   user.token = token;
   user.save(function (err, user) {
     if (err) return cb(err);
@@ -69,7 +70,7 @@ userSchema.methods.generateToken = function (cb) {
 
 userSchema.statics.findByToken = function (token, cb) {
   const user = this;
-  jwt.verify(token, 'secretToken', function (err, decoded) {
+  jwt.verify(token, JWT_SECRET, function (err, decoded) {
     user.findOne({_id: decoded, token: token}, function (err, user) {
       if (err) return cb(err);
       cb(null, user);

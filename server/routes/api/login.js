@@ -4,7 +4,6 @@ const router = express.Router(); // express의 Router 사용
 
 router.post('/', async (req, res) => {
   const {email, password} = req.body;
-
   try {
     // email을 비교하여 user가 이미 존재하는지 확인
     let user = await User.findOne({email});

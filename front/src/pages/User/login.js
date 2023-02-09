@@ -1,8 +1,8 @@
 import React, {useEffect, useState} from 'react';
 import {useNavigate} from 'react-router-dom';
 import {useRecoilState} from 'recoil';
-import {Token, Role, Name} from 'atoms';
-import API from 'config';
+import {Role, Name} from 'atoms';
+import axios from 'axios';
 import styled from 'styled-components';
 import Input from 'components/Input';
 import Button from 'components/Button';
@@ -10,7 +10,6 @@ import logo from 'assets/logo.png';
 
 const Login = () => {
   const navigate = useNavigate();
-  const [token, setToken] = useRecoilState(Token);
   const [name, setName] = useRecoilState(Name);
   const [role, setRole] = useRecoilState(Role);
   const [joinMode, setJoinMode] = useState(false);
@@ -21,7 +20,7 @@ const Login = () => {
   });
 
   useEffect(() => {
-    if (token && token !== '') {
+    if (name && name !== '') {
       alert('이미 로그인 되어 있습니다.');
       navigate('/');
     }
@@ -30,34 +29,27 @@ const Login = () => {
   const handleLogin = e => {
     e.preventDefault();
 
-    const url = API.login;
-    const param = {
+    const data = {
       email: form.email,
       password: form.password,
     };
-    const options = {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(param),
-    };
 
     if (!joinMode) {
-      fetch(url, options)
-        .then(res => res.json())
-        .then(data => {
-          if (data.success) {
+      axios
+        .post('/login', data)
+        .then(res => {
+          if (res.data.success) {
+            console.log('dd');
+            const accessToken = res.data.user.token;
+            axios.defaults.headers.common['Authorization'] = `Bearer ${accessToken}`;
+            setName(res.data.user.name);
+            setRole(res.data.user.role);
+            sessionStorage.setItem('name', res.data.user.name);
+            sessionStorage.setItem('role', res.data.user.role);
             alert(`로그인 완료!🎉`);
-            setToken(data.user.token);
-            setName(data.user.name);
-            setRole(data.user.role);
-            sessionStorage.setItem('token', data.user.token);
-            sessionStorage.setItem('name', data.user.name);
-            sessionStorage.setItem('role', data.user.role);
             navigate('/');
           } else {
-            alert(data.msg);
+            alert(res.data.msg);
           }
         })
         .catch(error => console.log('error:', error));
@@ -66,23 +58,14 @@ const Login = () => {
 
   const handleJoin = () => {
     if (joinMode) {
-      const url = API.register;
-      const options = {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(form),
-      };
-
-      fetch(url, options)
-        .then(res => res.json())
-        .then(data => {
-          if (data.success) {
-            alert(`${data.user.name}님 안녕하세요! \n가입이 완료되였습니다🎉`);
+      axios
+        .post('/register', form)
+        .then(res => {
+          if (res.data.success) {
+            alert(`${res.data.user.name}님 안녕하세요! \n가입이 완료되였습니다🎉`);
             setJoinMode(false);
           } else {
-            alert(data.msg);
+            alert(res.data.msg);
           }
         })
         .catch(error => console.log('error:', error));

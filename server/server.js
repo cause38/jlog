@@ -7,10 +7,15 @@ const {PORT, MONGO_URI} = process.env;
 const app = express();
 const path = require('path');
 
+app.use(cookieParser());
 app.use(express.urlencoded({extended: false}));
 app.use(express.json());
-app.use(cors());
-app.use(cookieParser());
+app.use(
+  cors({
+    credentials: true,
+    origin: 'http://localhost:3000',
+  })
+);
 
 // TODO: 배포 시 체크
 // app.use('/', express.static(path.resolve(__dirname, './front/build')));
@@ -20,6 +25,7 @@ app.use(cookieParser());
 // });
 
 app.use('/api/login', require('./routes/api/login'));
+app.use('/api/logout', require('./routes/api/logout'));
 app.use('/api/register', require('./routes/api/register'));
 app.listen(PORT, () => console.log(PORT, 'PORT OPEN SUCCESS!!'));
 
