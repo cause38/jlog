@@ -5,6 +5,7 @@ import Home from 'pages/Home';
 import Login from 'pages/User/Login';
 import Logout from 'pages/User/Logout';
 import Write from 'pages/Post/Write';
+import View from 'pages/Post/View';
 import GlobalStyles from 'components/GlobalStyles';
 
 const Router = () => {
@@ -17,6 +18,7 @@ const Router = () => {
           <Route path="/login" element={<Login />} />
           <Route path="/logout" element={<Logout />} />
           <Route path="/write" element={<Write />} />
+          <Route path="/view" element={<View />} />
         </Routes>
       </Layout>
     </BrowserRouter>

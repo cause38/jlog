@@ -119,8 +119,9 @@ const GlobalStyles = createGlobalStyle`
         --prism-line-number: #5c6370;
       }
 
-      background-color: var(--bg-element1);
+      background-color: var(--bg-page1);
       transition: 0.5s;
+      
       * {
         color: var(--text1);
         font-size: 14px;
@@ -133,12 +134,6 @@ const GlobalStyles = createGlobalStyle`
       overflow: hidden;
       text-indent: -9999vw;
       white-space: nowrap;
-    }
-    .inner {
-      --padding: 20px;
-      max-width: calc(1440px + var(--padding) * 2);
-      margin: 0 auto;
-      padding: 0 var(--padding);
     }
 `;
 

@@ -9,14 +9,14 @@ const StyledLayout = styled.div`
   flex-direction: column;
   justify-content: space-between;
   align-items: center;
-  width: 100vw;
+  width: 100%;
   min-height: 100vh;
 
   .inner {
     --padding: 20px;
-    max-width: calc(1440px + var(--padding) * 2);
+    max-width: calc(1760px + var(--padding) * 2);
     margin: 0 auto;
-    padding: 0 var(--padding);
+    padding: 30px var(--padding);
   }
 `;
 
