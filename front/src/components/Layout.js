@@ -1,13 +1,12 @@
 import React from 'react';
-import {Outlet} from 'react-router';
+import {Outlet, useLocation} from 'react-router';
 import Header from './Header';
 import Footer from './Footer';
-import styled from 'styled-components';
+import styled, {css} from 'styled-components';
 
 const StyledLayout = styled.div`
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
   align-items: center;
   width: 100%;
   min-height: 100vh;
@@ -23,6 +22,17 @@ const StyledLayout = styled.div`
 const Main = styled.main`
   width: 100%;
   min-height: calc(100vh - 125px);
+  --padding: 20px;
+  --paddingY: 30px;
+  ${props =>
+    props.theme === 'none' &&
+    css`
+      --padding: 0;
+      --paddingY: 0;
+    `}
+  max-width: calc(1760px + var(--padding) * 2);
+  margin: 0 auto;
+  padding: var(--paddingY) var(--padding);
 
   &:has(.center-box) {
     display: flex;
@@ -32,11 +42,21 @@ const Main = styled.main`
 `;
 
 const Layout = ({children}) => {
+  const {pathname} = useLocation();
+
   return (
     <StyledLayout>
-      <Header />
-      <Main className="inner">{children || <Outlet />}</Main>
-      <Footer />
+      {pathname === '/write' ? (
+        <>
+          <Main theme="none">{children || <Outlet />}</Main>
+        </>
+      ) : (
+        <>
+          <Header />
+          <Main>{children || <Outlet />}</Main>
+          <Footer />
+        </>
+      )}
     </StyledLayout>
   );
 };

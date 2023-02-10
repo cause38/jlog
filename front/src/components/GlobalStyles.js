@@ -17,6 +17,16 @@ const GlobalStyles = createGlobalStyle`
       -ms-user-select: auto;
       user-select: auto;
     }
+    textarea {
+      background: transparent;
+      display: block;
+      padding: 0px;
+      width: 100%;
+      resize: none;
+      line-height: 1.5;
+      outline: none;
+      border: none;
+    }
     input:focus {
       outline: none;
     }
@@ -121,12 +131,22 @@ const GlobalStyles = createGlobalStyle`
 
       background-color: var(--bg-page1);
       transition: 0.5s;
+
       
       * {
         color: var(--text1);
         font-size: 14px;
         box-sizing: border-box;
+        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
       }
+    }
+
+    ::-webkit-scrollbar {
+      width: 4px;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: var(--bg-element5) !important;
+      border-radius: 1px !important;
     }
 
     .hide {
@@ -134,6 +154,15 @@ const GlobalStyles = createGlobalStyle`
       overflow: hidden;
       text-indent: -9999vw;
       white-space: nowrap;
+    }
+
+    .svg-box {
+      display: flex;
+      -webkit-box-align: center;
+      align-items: center;
+      -webkit-box-pack: center;
+      justify-content: center;
+      flex-shrink: 0;
     }
 `;
 

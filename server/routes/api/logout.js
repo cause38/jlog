@@ -1,8 +1,7 @@
 const express = require('express');
 const router = express.Router();
-const {authChecker} = require('../../middleware/auth');
 
-router.post('/', authChecker, async (req, res) => {
+router.post('/', async (req, res) => {
   try {
     res.clearCookie('x_auth');
     res.status(200).json({success: true});

@@ -9,5 +9,5 @@ const counterSchema = mongoose.Schema({
   },
 });
 
-const Counter = mongoose.model('Post', counterSchema);
+const Counter = mongoose.model('Counter', counterSchema);
 module.exports = {Counter};

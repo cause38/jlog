@@ -39,7 +39,6 @@ const Login = () => {
         .post('/login', data)
         .then(res => {
           if (res.data.success) {
-            console.log('dd');
             const accessToken = res.data.user.token;
             axios.defaults.headers.common['Authorization'] = `Bearer ${accessToken}`;
             setName(res.data.user.name);

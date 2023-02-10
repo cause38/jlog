@@ -4,24 +4,29 @@ const {Counter} = require('../../models/Counter');
 const router = express.Router();
 const {authChecker} = require('../../middleware/auth');
 
-router.post('/', authChecker, async (req, res) => {
+router.post('/', async (req, res) => {
   const {title, content, tags} = req.body;
   try {
-    if (!title) {
+    if (!title || title === '') {
       return res.status(400).json({success: false, msg: '제목을 입력해주세요'});
-    } else if (!content) {
+    } else if (!content || content === '') {
       return res.status(400).json({success: false, msg: '내용을 입력해주세요'});
     } else {
-      const id = Counter.findOne({name: 'totalPost'});
-      const post = new Post({
-        id,
-        title,
-        desc,
-        createdAt,
+      let id = 0;
+      id = await Counter.findOne({name: 'totalPost'}, (err, res) => {
+        if (err) return res.status(400).json({success: false, msg: 'totalPost error'});
+        id = res.totalPost + 1;
       });
+      Counter.findOneAndUpdate({name: 'totalPost'}, {$set: {totalPost: id}}, {returnNewDocument: true});
 
-      await post.save();
-      return res.status(200).json({success: true, postId: 1});
+      // const post = new Post({
+      //   id,
+      //   title,
+      //   content,
+      // });
+
+      // await post.save();
+      return res.status(200).json({success: true, postId: id});
     }
   } catch (error) {
     return res.status(500).json({success: false, msg: error.message});

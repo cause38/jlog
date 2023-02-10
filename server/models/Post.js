@@ -1,6 +1,10 @@
 const mongoose = require('mongoose');
 
 const postSchema = mongoose.Schema({
+  id: {
+    type: Number,
+    required: true,
+  },
   title: {
     type: String,
     trim: true,
@@ -24,6 +28,9 @@ const postSchema = mongoose.Schema({
   },
   tags: {
     type: [],
+  },
+  like: {
+    type: Number,
   },
 });
 

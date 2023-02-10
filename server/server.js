@@ -10,12 +10,7 @@ const path = require('path');
 app.use(cookieParser());
 app.use(express.urlencoded({extended: false}));
 app.use(express.json());
-app.use(
-  cors({
-    credentials: true,
-    origin: 'http://localhost:3000',
-  })
-);
+app.use(cors());
 
 // TODO: 배포 시 체크
 // app.use('/', express.static(path.resolve(__dirname, './front/build')));
@@ -27,6 +22,7 @@ app.use(
 app.use('/api/login', require('./routes/api/login'));
 app.use('/api/logout', require('./routes/api/logout'));
 app.use('/api/register', require('./routes/api/register'));
+app.use('/api/write', require('./routes/api/write'));
 app.listen(PORT, () => console.log(PORT, 'PORT OPEN SUCCESS!!'));
 
 const mongoose = require('mongoose');
