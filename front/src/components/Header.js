@@ -146,16 +146,16 @@ const ProfileList = styled.ul`
   position: absolute;
   top: calc(100% + 5px);
   right: 0;
-  width: 10vw;
   text-align: center;
   flex-direction: column;
   gap: 10px;
-  padding: 15px;
+  padding: 15px 30px;
   border-radius: 10px;
   background-color: var(--bg-element3);
 
   li {
     font-weight: bold;
+    white-space: nowrap;
     &:hover {
       a {
         color: var(--primary1);
