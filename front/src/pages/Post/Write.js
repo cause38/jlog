@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {useNavigate} from 'react-router-dom';
+import {useLocation, useNavigate} from 'react-router-dom';
 import {BiBold, BiItalic} from 'react-icons/bi';
 import {MdFormatStrikethrough} from 'react-icons/md';
 import {GrBlockQuote} from 'react-icons/gr';
@@ -13,12 +13,29 @@ import Content from 'components/Content';
 
 const Write = () => {
   const navigate = useNavigate();
+  const {state} = useLocation();
+  const [editMode, setEditMode] = useState(false);
   const [tagList, setTagList] = useState([]);
-  const [form, setForm] = useForm({
+  const [form, setForm, setData] = useForm({
     title: '',
     tags: [],
     content: '',
   });
+
+  useEffect(() => {
+    if (state.id) {
+      setEditMode(true);
+      axios
+        .get(`/view?id=${state.id}`)
+        .then(res => {
+          if (res.data.success) {
+            setData({...res.data.data});
+            setTagList([...res.data.data.tags]);
+          }
+        })
+        .catch(error => console.log('error:', error));
+    }
+  }, []);
 
   const handleTitleArea = e => {
     e.target.style.height = '1px';
@@ -53,8 +70,9 @@ const Write = () => {
   }, [tagList, setForm]);
 
   const handleWrite = () => {
+    const url = editMode ? 'edit' : 'write';
     axios
-      .post('/write', form)
+      .post(url, form)
       .then(res => {
         if (res.data.success) {
           alert(`게시글 등록 완료!🎉`);
@@ -74,6 +92,7 @@ const Write = () => {
           name="title"
           placeholder="제목을 입력하세요"
           maxLength={50}
+          value={form.title}
           onChange={e => setForm(e)}
           onInput={e => handleTitleArea(e)}
         />
@@ -120,7 +139,12 @@ const Write = () => {
           </IconMenu>
         </Tools>
         <ContentsBox>
-          <textarea placeholder="당신의 이야기를 적어보세요..." name="content" onChange={e => setForm(e)} />
+          <textarea
+            placeholder="당신의 이야기를 적어보세요..."
+            name="content"
+            value={form.content}
+            onChange={e => setForm(e)}
+          />
         </ContentsBox>
       </WriteBox>
       <Preview>

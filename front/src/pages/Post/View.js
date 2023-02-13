@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react';
-import {Link, useParams, useNavigate} from 'react-router-dom';
+import {useParams, useNavigate} from 'react-router-dom';
 import styled from 'styled-components';
 import axios from 'axios';
 import Content from 'components/Content';
@@ -8,7 +8,7 @@ import {useRecoilState} from 'recoil';
 
 const View = () => {
   const navigate = useNavigate();
-  const role = useRecoilState(Role);
+  const [role, setRole] = useRecoilState(Role);
   const {id} = useParams();
   const [data, setData] = useState({
     title: '',
@@ -51,12 +51,12 @@ const View = () => {
           </span>
           <span>{data.createdAt.split('T')[0]}</span>
         </InfoBox>
-        {role && (
+        {role ? (
           <BtnBox>
-            <button onClick={() => navigate(`/write?post=${data.id}`)}>수정</button>
+            <button onClick={() => navigate('/write', {state: {id: data.id}})}>수정</button>
             <button onClick={() => handleDelete(data.id)}>삭제</button>
           </BtnBox>
-        )}
+        ) : null}
       </InfoWrap>
       <TagList>
         {data.tags.length > 0 && (
@@ -73,7 +73,8 @@ const View = () => {
 };
 
 const Wrap = styled.div`
-  width: 768px;
+  width: 100%;
+  max-width: 768px;
   margin: 0 auto;
 `;
 
@@ -119,6 +120,7 @@ const InfoBox = styled.div`
 const InfoWrap = styled.span`
   display: flex;
   gap: 10px;
+  flex-wrap: wrap;
   justify-content: space-between;
   margin-bottom: 1rem;
 `;
