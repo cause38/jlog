@@ -17,8 +17,6 @@ const Logout = () => {
           if (res.data.success) {
             setName('');
             setRole('');
-            sessionStorage.setItem('name', '');
-            sessionStorage.setItem('role', '');
             alert(`로그아웃 완료!🎉`);
             navigate('/', {replace: true});
           } else {

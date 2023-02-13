@@ -44,10 +44,8 @@ const Login = () => {
             axios.defaults.headers.common['Authorization'] = `Bearer ${accessToken}`;
             setName(res.data.user.name);
             setRole(res.data.user.role);
-            sessionStorage.setItem('name', res.data.user.name);
-            sessionStorage.setItem('role', res.data.user.role);
             alert(`로그인 완료!🎉`);
-            navigate('/');
+            navigate(-1);
           } else {
             alert(res.data.msg);
           }
