@@ -58,7 +58,8 @@ const Write = () => {
       .then(res => {
         if (res.data.success) {
           alert(`글 등록 완료!🎉`);
-          navigate('/view');
+          const id = res.data.postId;
+          navigate(`/view/${id}`);
         } else {
           alert(res.data.msg);
         }
@@ -135,9 +136,13 @@ const Write = () => {
 };
 
 const PreTitle = styled.h2`
-  font-size: 2.5em;
-  margin-bottom: 4rem;
+  font-size: 3rem;
+  line-height: 1.5;
+  letter-spacing: -0.004em;
+  margin-top: 0px;
   font-weight: 800;
+  color: var(--text1);
+  margin-bottom: 2rem;
 `;
 
 const Tag = styled.div`
@@ -183,6 +188,9 @@ const BtnBox = styled.div`
   padding: 20px 20px;
   background-color: var(--bg-element1);
   box-shadow: 0 0 10px var(--slight-layer);
+  @media (min-width: 1024px) {
+    width: 50%;
+  }
   button {
     width: auto;
     padding: 10px 20px;
@@ -259,8 +267,9 @@ const WriteBox = styled.div`
   width: 100%;
   background-color: var(--bg-element1);
   height: calc(100vh - 65px - 53px - 30px);
-  textarea {
-    padding: 10px;
+  padding: 20px;
+  @media (min-width: 768px) {
+    padding: 2rem 3rem;
   }
 `;
 

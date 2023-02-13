@@ -25,26 +25,28 @@ const HOME = () => {
     <>
       <h2 className="hide">HOME</h2>
       <List>
-        {postList.map(item => (
-          <li key={item.id}>
-            <Link to={`/view/${item.id}`}>
-              <ImgBox>
-                <img src={sampleImg} alt={item.title} />
-              </ImgBox>
-              <TxtBox>
-                <p className="title">{item.title}</p>
-                <p className="desc">{item.content}</p>
-              </TxtBox>
-            </Link>
-            <InfoBox>
-              <span className="date">{item.createdAt.split('T')[0]}</span>
-              <div className="like">
-                <HiHeart />
-                {item.like}
-              </div>
-            </InfoBox>
-          </li>
-        ))}
+        {postList.length > 0
+          ? postList.map(item => (
+              <li key={item.id}>
+                <Link to={`/view/${item.id}`}>
+                  <ImgBox>
+                    <img src={sampleImg} alt={item.title} />
+                  </ImgBox>
+                  <TxtBox>
+                    <p className="title">{item.title}</p>
+                    <p className="desc">{item.content}</p>
+                  </TxtBox>
+                </Link>
+                <InfoBox>
+                  <span className="date">{item.createdAt.split('T')[0]}</span>
+                  <div className="like">
+                    <HiHeart />
+                    {item.like}
+                  </div>
+                </InfoBox>
+              </li>
+            ))
+          : '작성한 글이 없습니다'}
       </List>
     </>
   );
@@ -96,7 +98,7 @@ const TxtBox = styled.div`
   .desc {
     display: -webkit-box;
     max-width: 100%;
-    min-height: 54.5px;
+    min-height: 72px;
     line-height: 1.5;
     color: var(--text2);
     -webkit-line-clamp: 3;
