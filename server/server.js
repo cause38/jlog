@@ -24,6 +24,7 @@ app.use('/api/register', require('./routes/api/register'));
 app.use('/api/write', require('./routes/api/write'));
 app.use('/api/list', require('./routes/api/list'));
 app.use('/api/view', require('./routes/api/view'));
+app.use('/api/delete', require('./routes/api/delete'));
 app.listen(PORT, () => console.log(PORT, 'PORT OPEN SUCCESS!!'));
 
 const mongoose = require('mongoose');

@@ -57,7 +57,7 @@ const Write = () => {
       .post('/write', form)
       .then(res => {
         if (res.data.success) {
-          alert(`글 등록 완료!🎉`);
+          alert(`게시글 등록 완료!🎉`);
           const id = res.data.postId;
           navigate(`/view/${id}`);
         } else {

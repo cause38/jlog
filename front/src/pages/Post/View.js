@@ -1,10 +1,14 @@
 import React, {useState, useEffect} from 'react';
-import {useParams} from 'react-router-dom';
+import {Link, useParams, useNavigate} from 'react-router-dom';
 import styled from 'styled-components';
 import axios from 'axios';
 import Content from 'components/Content';
+import {Role} from 'atoms';
+import {useRecoilState} from 'recoil';
 
 const View = () => {
+  const navigate = useNavigate();
+  const role = useRecoilState(Role);
   const {id} = useParams();
   const [data, setData] = useState({
     title: '',
@@ -25,14 +29,34 @@ const View = () => {
       .catch(error => console.log('error:', error));
   }, []);
 
+  const handleDelete = id => {
+    axios
+      .get(`/delete?id=${id}`)
+      .then(res => {
+        if (res.data.success) {
+          alert('게시글 삭제 완료!🎉');
+          navigate('/');
+        }
+      })
+      .catch(error => console.log('error:', error));
+  };
+
   return (
     <Wrap>
-      <Title>title</Title>
+      <Title>{data.title}</Title>
       <InfoWrap>
-        <span>
-          <strong>jinjoo ·</strong>
-        </span>
-        <span>{data.createdAt.split('T')[0]}</span>
+        <InfoBox>
+          <span>
+            <strong>jinjoo ·</strong>
+          </span>
+          <span>{data.createdAt.split('T')[0]}</span>
+        </InfoBox>
+        {role && (
+          <BtnBox>
+            <button onClick={() => navigate(`/write?post=${data.id}`)}>수정</button>
+            <button onClick={() => handleDelete(data.id)}>삭제</button>
+          </BtnBox>
+        )}
       </InfoWrap>
       <TagList>
         {data.tags.length > 0 && (
@@ -76,10 +100,26 @@ const TagList = styled.div`
   margin-bottom: 2rem;
 `;
 
-const InfoWrap = styled.span`
+const BtnBox = styled.div`
+  display: flex;
+  gap: 10px;
+  button {
+    font-size: 1rem;
+    color: var(--text3);
+    text-decoration: underline;
+  }
+`;
+
+const InfoBox = styled.div`
   display: flex;
   gap: 10px;
   color: var(--text2);
+`;
+
+const InfoWrap = styled.span`
+  display: flex;
+  gap: 10px;
+  justify-content: space-between;
   margin-bottom: 1rem;
 `;
 
