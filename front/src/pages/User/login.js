@@ -7,13 +7,14 @@ import styled from 'styled-components';
 import Input from 'components/Input';
 import Button from 'components/Button';
 import logo from 'assets/logo.png';
+import useForm from 'hooks/useForm';
 
 const Login = () => {
   const navigate = useNavigate();
   const [name, setName] = useRecoilState(Name);
   const [role, setRole] = useRecoilState(Role);
   const [joinMode, setJoinMode] = useState(false);
-  const [form, setForm] = useState({
+  const [form, setForm] = useForm({
     email: '',
     name: '',
     password: '',
@@ -73,12 +74,6 @@ const Login = () => {
     }
   };
 
-  const handleForm = e => {
-    const name = e.target.getAttribute('name');
-    const value = e.target.value;
-    setForm({...form, [name]: value});
-  };
-
   return (
     <LoginBox className="center-box">
       <h2 className="hide">Login</h2>
@@ -87,9 +82,9 @@ const Login = () => {
       </LogoBox>
       <form onSubmit={e => handleLogin(e)}>
         <InputBox>
-          <Input type="text" name="email" placeholder="email@email.com" onChange={handleForm} />
-          {joinMode && <Input type="text" name="name" placeholder="이름" onChange={handleForm} />}
-          <Input type="password" name="password" placeholder="비밀번호" onChange={handleForm} />
+          <Input type="text" name="email" placeholder="email@email.com" onChange={e => setForm(e)} />
+          {joinMode && <Input type="text" name="name" placeholder="이름" onChange={e => setForm(e)} />}
+          <Input type="password" name="password" placeholder="비밀번호" onChange={e => setForm(e)} />
         </InputBox>
         <ButtonBox>
           <Button type="button" text="회원가입" onClick={handleJoin} />

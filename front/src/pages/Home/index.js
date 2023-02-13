@@ -3,22 +3,23 @@ import {Link} from 'react-router-dom';
 import styled from 'styled-components';
 import sampleImg from 'assets/sample.jpg';
 import {HiHeart} from 'react-icons/hi2';
+import axios from 'axios';
 
 const HOME = () => {
   const [postList, setPostList] = useState([]);
 
   useEffect(() => {
-    const newList = [];
-    for (let i = 0; i <= 20; i++) {
-      newList.push({
-        id: i,
-        title: `${i + 1}번째 게시글게시글게시글게시글게시글`,
-        desc: '설명입니다 많이 적을거니 이렇게 좀 길면 좋겠지요오오오좋겠지요오오오좋겠지요오오오좋겠지요오오오좋겠지요오오오좋겠지요오오오좋겠지요오오오좋겠지요오오오좋겠지요오오오',
-        date: '2023-02-09',
-        like: 3,
-      });
-    }
-    setPostList(newList);
+    axios
+      .get('/list')
+      .then(res => {
+        if (res.data.success) {
+          const newList = res.data.data;
+          setPostList(newList);
+        } else {
+          alert(res.data.msg);
+        }
+      })
+      .catch(error => console.log('error:', error));
   }, []);
   return (
     <>
@@ -26,17 +27,17 @@ const HOME = () => {
       <List>
         {postList.map(item => (
           <li key={item.id}>
-            <Link to="/view">
+            <Link to={`/view/${item.id}`}>
               <ImgBox>
                 <img src={sampleImg} alt={item.title} />
               </ImgBox>
               <TxtBox>
                 <p className="title">{item.title}</p>
-                <p className="desc">{item.desc}</p>
+                <p className="desc">{item.content}</p>
               </TxtBox>
             </Link>
             <InfoBox>
-              <span className="date">{item.date}</span>
+              <span className="date">{item.createdAt.split('T')[0]}</span>
               <div className="like">
                 <HiHeart />
                 {item.like}

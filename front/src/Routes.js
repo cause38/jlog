@@ -18,7 +18,7 @@ const Router = () => {
           <Route path="/login" element={<Login />} />
           <Route path="/logout" element={<Logout />} />
           <Route path="/write" element={<Write />} />
-          <Route path="/view" element={<View />} />
+          <Route path="/view/:id" element={<View />} />
         </Routes>
       </Layout>
     </BrowserRouter>

@@ -23,17 +23,11 @@ const userSchema = mongoose.Schema({
     required: true,
   },
   role: {
-    // 관리자 여부
     type: Number,
-    default: 0, // 값이 정해지지 않았다면 디폴트로 0!
+    default: 0,
   },
   image: String,
-  token: {
-    type: String,
-  },
-  tokenExp: {
-    type: Number,
-  },
+  token: String,
 });
 
 userSchema.pre('save', function (next) {

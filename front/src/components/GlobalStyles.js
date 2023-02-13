@@ -129,16 +129,19 @@ const GlobalStyles = createGlobalStyle`
         --prism-line-number: #5c6370;
       }
 
-      background-color: var(--bg-page1);
+      background-color: var(--bg-page2);
       transition: 0.5s;
+    }
 
-      
-      * {
-        color: var(--text1);
-        font-size: 14px;
-        box-sizing: border-box;
-        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
-      }
+    * {
+      color: var(--text1);
+      font-size: 14px;
+      box-sizing: border-box;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    }
+
+    strong {
+      font-weight: bold;
     }
 
     ::-webkit-scrollbar {

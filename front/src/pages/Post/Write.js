@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {useNavigate} from 'react-router-dom';
 import {BiBold, BiItalic} from 'react-icons/bi';
 import {MdFormatStrikethrough} from 'react-icons/md';
@@ -8,16 +8,49 @@ import {BsFillImageFill, BsCode} from 'react-icons/bs';
 import styled from 'styled-components';
 import Button from 'components/Button';
 import axios from 'axios';
+import useForm from 'hooks/useForm';
+import Content from 'components/Content';
 
 const Write = () => {
   const navigate = useNavigate();
-  const [form, setForm] = useState({
+  const [tagList, setTagList] = useState([]);
+  const [form, setForm] = useForm({
     title: '',
     tags: [],
     content: '',
   });
 
-  const handleChange = e => {};
+  const handleTitleArea = e => {
+    e.target.style.height = '1px';
+    e.target.style.height = e.target.scrollHeight + 'px';
+  };
+
+  const handleTags = (() => {
+    return {
+      add(e) {
+        if (e.keyCode === 13) {
+          setTagList([...tagList, e.target.value]);
+          e.target.focus();
+          e.target.value = '';
+        }
+      },
+      delete(idx) {
+        const arr = tagList;
+        arr.splice(idx, 1);
+        setTagList([...arr]);
+      },
+    };
+  })();
+
+  useEffect(() => {
+    const tagsData = {
+      target: {
+        name: 'tags',
+        value: tagList,
+      },
+    };
+    setForm(tagsData);
+  }, [tagList, setForm]);
 
   const handleWrite = () => {
     axios
@@ -25,7 +58,7 @@ const Write = () => {
       .then(res => {
         if (res.data.success) {
           alert(`글 등록 완료!🎉`);
-          navigate('/');
+          navigate('/view');
         } else {
           alert(res.data.msg);
         }
@@ -36,8 +69,26 @@ const Write = () => {
   return (
     <WriteWrap>
       <WriteBox>
-        <Title name="title" placeholder="제목을 입력하세요" onChange={e => handleChange} />
-        <Tags type="text" name="tags" placeholder="태그를 입력하세요" onChange={e => handleChange} />
+        <Title
+          name="title"
+          placeholder="제목을 입력하세요"
+          maxLength={50}
+          onChange={e => setForm(e)}
+          onInput={e => handleTitleArea(e)}
+        />
+        <TagList onClick={() => document.querySelector(['[name="tags"]']).focus()}>
+          {tagList.length > 0 && (
+            <>
+              {tagList.map((tag, idx) => (
+                <Tag key={idx} onClick={() => handleTags.delete(idx)}>
+                  {tag}
+                </Tag>
+              ))}
+            </>
+          )}
+          <TagInput type="text" name="tags" placeholder="태그를 입력하세요" onKeyUp={e => handleTags.add(e)} />
+        </TagList>
+
         <Tools>
           <Htag type="button">H1</Htag>
           <Htag type="button">H2</Htag>
@@ -68,17 +119,58 @@ const Write = () => {
           </IconMenu>
         </Tools>
         <ContentsBox>
-          <textarea placeholder="당신의 이야기를 적어보세요..." onChange={e => handleChange} />
+          <textarea placeholder="당신의 이야기를 적어보세요..." name="content" onChange={e => setForm(e)} />
         </ContentsBox>
       </WriteBox>
-      <Preview></Preview>
+      <Preview>
+        <PreTitle>{form.title}</PreTitle>
+        <Content content={form.content} />
+      </Preview>
       <BtnBox>
         <Button type="button" text="나가기" theme="none" onClick={() => navigate(-1)} />
-        <Button type="button" text="저장" />
+        <Button type="button" text="저장" theme="basic" onClick={() => handleWrite()} />
       </BtnBox>
     </WriteWrap>
   );
 };
+
+const PreTitle = styled.h2`
+  font-size: 2.5em;
+  margin-bottom: 4rem;
+  font-weight: 800;
+`;
+
+const Tag = styled.div`
+  font-size: 1rem;
+  display: inline-flex;
+  -webkit-box-align: center;
+  align-items: center;
+  height: 2rem;
+  padding-left: 1rem;
+  padding-right: 1rem;
+  margin-right: 0.75rem;
+  margin-bottom: 0.75rem;
+  border-radius: 1rem;
+  background: var(--bg-element2);
+  color: var(--primary1);
+  transition: 0.125s ease-in;
+  cursor: pointer;
+`;
+
+const TagList = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+`;
+
+const TagInput = styled.input`
+  width: auto;
+  min-width: 8rem;
+  padding: 10px;
+  border: none;
+  color: var(--text1);
+  max-width: 100%;
+  margin-bottom: 0.75rem;
+`;
 
 const BtnBox = styled.div`
   position: fixed;
@@ -108,17 +200,10 @@ const ContentsBox = styled.div`
 `;
 
 const Title = styled.textarea`
+  height: 90px;
   font-size: 2.75rem;
   font-weight: bold;
   color: var(--text1);
-`;
-
-const Tags = styled.input`
-  padding: 10px;
-  border: none;
-  color: var(--text1);
-  width: 100%;
-  max-width: 100%;
 `;
 
 const Tools = styled.div`
@@ -180,6 +265,7 @@ const WriteBox = styled.div`
 `;
 
 const Preview = styled.div`
+  padding: 3rem;
   display: none;
   @media (min-width: 1024px) {
     display: flex;

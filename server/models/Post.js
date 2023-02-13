@@ -23,14 +23,11 @@ const postSchema = mongoose.Schema({
     type: Date,
     default: Date.now,
   },
-  file: {
-    type: [],
-  },
-  tags: {
-    type: [],
-  },
+  file: [],
+  tags: [],
   like: {
     type: Number,
+    default: 0,
   },
 });
 
