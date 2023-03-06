@@ -19,7 +19,9 @@ const HOME = () => {
           alert(res.data.msg);
         }
       })
-      .catch(error => console.log('error:', error));
+      .catch(error => {
+        error.response.data.msg ? alert(error.response.data.msg) : console.warn(error);
+      });
   }, []);
   return (
     <>

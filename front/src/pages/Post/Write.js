@@ -20,17 +20,19 @@ const Write = () => {
     title: '',
     tags: [],
     content: '',
+    id: '',
   });
 
   useEffect(() => {
-    if (state.id) {
+    if (state && state.id) {
       setEditMode(true);
       axios
         .get(`/view?id=${state.id}`)
         .then(res => {
           if (res.data.success) {
-            setData({...res.data.data});
-            setTagList([...res.data.data.tags]);
+            const result = res.data.data;
+            setData({...result, id: result.id});
+            setTagList([...result.tags]);
           }
         })
         .catch(error => console.log('error:', error));
@@ -70,7 +72,7 @@ const Write = () => {
   }, [tagList, setForm]);
 
   const handleWrite = () => {
-    const url = editMode ? 'edit' : 'write';
+    const url = editMode ? '/edit' : '/write';
     axios
       .post(url, form)
       .then(res => {
@@ -82,7 +84,9 @@ const Write = () => {
           alert(res.data.msg);
         }
       })
-      .catch(error => console.log('error:', error));
+      .catch(error => {
+        error.response.data.msg ? alert(error.response.data.msg) : console.warn(error);
+      });
   };
 
   return (

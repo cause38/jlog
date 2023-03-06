@@ -26,7 +26,9 @@ const View = () => {
           setData({...data, ...res.data.data});
         }
       })
-      .catch(error => console.log('error:', error));
+      .catch(error => {
+        error.response.data.msg ? alert(error.response.data.msg) : console.warn(error);
+      });
   }, []);
 
   const handleDelete = id => {
@@ -38,7 +40,9 @@ const View = () => {
           navigate('/');
         }
       })
-      .catch(error => console.log('error:', error));
+      .catch(error => {
+        error.response.data.msg ? alert(error.response.data.msg) : console.warn(error);
+      });
   };
 
   return (
