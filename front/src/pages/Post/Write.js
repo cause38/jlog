@@ -10,6 +10,8 @@ import Button from 'components/Button';
 import axios from 'axios';
 import useForm from 'hooks/useForm';
 import Content from 'components/Content';
+import '@toast-ui/editor/dist/toastui-editor.css';
+import {Editor} from '@toast-ui/react-editor';
 
 const Write = () => {
   const navigate = useNavigate();
@@ -113,7 +115,21 @@ const Write = () => {
           <TagInput type="text" name="tags" placeholder="태그를 입력하세요" onKeyUp={e => handleTags.add(e)} />
         </TagList>
 
-        <Tools>
+        <Editor
+          placeholder="내용을 입력해주세요."
+          previewStyle="vertical" // 미리보기 스타일 지정
+          height="100%" // 에디터 창 높이
+          toolbarItems={[
+            // 툴바 옵션 설정
+            ['heading', 'bold', 'italic', 'strike'],
+            ['hr', 'quote'],
+            ['ul', 'ol', 'task', 'indent', 'outdent'],
+            ['table', 'image', 'link'],
+            ['code', 'codeblock'],
+          ]}
+        />
+
+        {/* <Tools>
           <Htag type="button">H1</Htag>
           <Htag type="button">H2</Htag>
           <Htag type="button">H3</Htag>
@@ -149,12 +165,12 @@ const Write = () => {
             value={form.content}
             onChange={e => setForm(e)}
           />
-        </ContentsBox>
+        </ContentsBox> */}
       </WriteBox>
-      <Preview>
+      {/* <Preview>
         <PreTitle>{form.title}</PreTitle>
         <Content content={form.content} />
-      </Preview>
+      </Preview> */}
       <BtnBox>
         <Button type="button" text="나가기" theme="none" onClick={() => navigate(-1)} />
         <Button type="button" text="저장" theme="basic" onClick={() => handleWrite()} />
