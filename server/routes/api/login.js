@@ -8,7 +8,7 @@ router.post('/', async (req, res) => {
     // email을 비교하여 user가 이미 존재하는지 확인
     let user = await User.findOne({email});
     if (!user) {
-      return res.status(400).json({success: false, msg: '가입되지 않은 이메일입니다'});
+      return res.json({success: false, msg: '가입되지 않은 이메일입니다'});
     }
 
     // 요청된 이메일이 db에 있다면 비밀번호 일치여부 확인
@@ -16,8 +16,10 @@ router.post('/', async (req, res) => {
       if (!isMatch)
         return res.json({
           success: false,
-          msg: isMatch,
+          msg: '비밀번호가 일치하지 않습니다.',
         });
+
+      console.log(user);
 
       // 일치 시, 토큰 생성
       user.generateToken((err, user) => {
