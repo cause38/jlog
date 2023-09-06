@@ -5,9 +5,10 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "pm2 start echosystem.config.js",
     "server": "nodemon server/server",
     "front": "cd front && npm run start",
-    "start": "concurrently --kill-others-on-fail \"npm run server\" \"npm run front\""
+    "dev": "concurrently --kill-others-on-fail \"npm run server\" \"npm run front\""
   },
   "repository": {
     "type": "git",
@@ -18,7 +19,7 @@
   "bugs": {
     "url": "https://github.com/cause38/jlog/issues"
   },
-  "homepage": "https://cause38.github.com/jlog",
+  "homepage": "https://jlog-jinjoo.koyeb.app/",
   "dependencies": {
     "bcryptjs": "^2.4.3",
     "concurrently": "^7.6.0",
@@ -28,7 +29,8 @@
     "express": "^4.18.2",
     "jsonwebtoken": "^9.0.0",
     "mongoose": "^6.9.0",
-    "nodemon": "^2.0.20"
+    "nodemon": "^2.0.20",
+    "pm2": "^5.3.0"
   },
   "devDependencies": {
     "gh-pages": "^6.0.0"
