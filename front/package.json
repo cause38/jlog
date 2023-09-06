@@ -2,6 +2,7 @@
   "name": "front",
   "version": "0.1.0",
   "private": true,
+  "homepage": "https://cause38.github.io/jlog",
   "dependencies": {
     "@testing-library/jest-dom": "^5.16.5",
     "@testing-library/react": "^13.4.0",
@@ -24,7 +25,9 @@
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "build-sass": "sass --style compressed --no-source-map src/styles/sass:src/styles/css",
-    "watch": "sass --watch --error-css --color src/styles/sass:src/styles/css"
+    "watch": "sass --watch --error-css --color src/styles/sass:src/styles/css",
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d build"
   },
   "eslintConfig": {
     "extends": [
