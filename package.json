@@ -5,7 +5,6 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "npx tsc",
     "start": "node server/server.js",
     "server": "nodemon server/server",
     "front": "cd front && npm run start",
@@ -31,8 +30,7 @@
     "jsonwebtoken": "^9.0.0",
     "mongoose": "^6.9.0",
     "nodemon": "^2.0.20",
-    "pm2": "^5.3.0",
-    "tsc": "^2.0.4"
+    "pm2": "^5.3.0"
   },
   "devDependencies": {
     "gh-pages": "^6.0.0"
