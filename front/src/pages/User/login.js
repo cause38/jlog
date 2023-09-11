@@ -117,7 +117,6 @@ const LogoBox = styled.div`
   display: flex;
   align-items: flex-end;
   gap: 8px;
-  font-family: cursive;
   font-weight: 400;
   font-size: clamp(20px, 3vw, 24px);
 `;
